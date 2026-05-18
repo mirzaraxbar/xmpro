@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>XM Pro</title>
- 
+
 <style>
 :root{
   --bg:#080c18;--bg2:#0d1422;--bg3:#141d2e;--bg4:#1a2538;--bg5:#213047;
@@ -152,7 +152,7 @@ tbody tr:last-child td{border-bottom:none}
   #pz th{background:#f0f0f0}
 }
 </style>
- 
+
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="XM Pro">
@@ -215,7 +215,7 @@ if('serviceWorker' in navigator){
 <body>
 <div class="toast" id="toast"></div>
 <div id="pz" style="display:none"></div>
- 
+
 <div id="confirm-bg">
   <div class="confirm-box">
     <h4 id="ct">—</h4><p id="cm">—</p>
@@ -225,7 +225,7 @@ if('serviceWorker' in navigator){
     </div>
   </div>
 </div>
- 
+
 <!-- LOGIN -->
 <div id="login">
   <div class="lcard">
@@ -254,7 +254,7 @@ if('serviceWorker' in navigator){
     <div class="lerr" id="lerr">❌ Login yoki parol noto'g'ri</div>
   </div>
 </div>
- 
+
 <!-- APP -->
 <div id="shell" style="display:none">
   <div id="topbar">
@@ -276,9 +276,9 @@ if('serviceWorker' in navigator){
     </div>
     <div id="notif-panel"></div>
   </div>
- 
+
   <div id="scroller">
- 
+
     <!-- HOME -->
     <div class="pg on" id="pg-home">
       <div class="g2">
@@ -292,14 +292,14 @@ if('serviceWorker' in navigator){
       <div class="slbl" id="hs-last-l">🕐 Oxirgi harakatlar</div>
       <div id="hs-last"></div>
     </div>
- 
+
     <!-- MAHSULOT -->
     <div class="pg" id="pg-mahsulot">
       <div class="tabs" id="mah-tabs"></div>
       <div class="srch"><input id="mah-q" oninput="renderMah()"></div>
       <div id="mah-list"></div>
     </div>
- 
+
     <!-- HARAKAT -->
     <div class="pg" id="pg-harakat">
       <div class="tabs" id="harakat-tabs">
@@ -363,21 +363,21 @@ if('serviceWorker' in navigator){
         <div id="tarix-list"></div>
       </div>
     </div>
- 
+
     <!-- BUYURTMA -->
     <div class="pg" id="pg-buyurtma">
       <div id="bq-form"></div>
       <div class="slbl" id="bq-list-lbl">📋 Buyurtmalar</div>
       <div id="buyurtma-list"></div>
     </div>
- 
+
     <!-- SEXLAR -->
     <div class="pg" id="pg-sex">
       <div id="sex-add-btn-wrap"></div>
       <div class="srch"><input id="sex-q" oninput="renderSex()"></div>
       <div id="sex-list"></div>
     </div>
- 
+
     <!-- HISOBOT -->
     <div class="pg" id="pg-hisobot">
       <div class="tabs">
@@ -390,7 +390,7 @@ if('serviceWorker' in navigator){
       </div>
       <div id="hib-content"></div>
     </div>
- 
+
     <!-- SOZLAMALAR -->
     <div class="pg" id="pg-sozlamalar">
       <div class="slbl" id="sl-users">👤 Foydalanuvchilar</div>
@@ -425,7 +425,7 @@ if('serviceWorker' in navigator){
       </div>
       <input type="file" id="imp" accept=".json" style="display:none" onchange="importData(this)">
       <button class="btn btn-d btn-bl" style="margin-top:6px" onclick="doLogout()" id="sl-out">🚪 Chiqish</button>
- 
+
       <!-- ZAYAFKA LIMITLARI -->
       <div class="slbl" style="margin-top:16px">🎉 Zayafka limitlari</div>
       <div class="card">
@@ -434,9 +434,9 @@ if('serviceWorker' in navigator){
         <button class="btn btn-a btn-bl" style="margin-top:8px" onclick="openZlimitModal()">＋ Limit qo'shish</button>
       </div>
     </div>
- 
+
   </div><!-- /scroller -->
- 
+
   <div id="nav">
     <button class="nb on" onclick="navTo('home',this)"><span class="ni">🏠</span><span class="nl" id="nl-home">Bosh</span></button>
     <button class="nb" onclick="navTo('mahsulot',this)"><span class="ni">📦</span><span class="nl" id="nl-mah">Mahsulot</span></button>
@@ -447,9 +447,9 @@ if('serviceWorker' in navigator){
     <button class="nb" id="nav-soz" onclick="navTo('sozlamalar',this)"><span class="ni">⚙️</span><span class="nl" id="nl-soz">Sozlama</span></button>
   </div>
 </div>
- 
+
 <button class="fab hide" id="fab" onclick="fabClick()">＋</button>
- 
+
 <!-- MODALS -->
 <div class="mbg" id="m-mah">
   <div class="mbox"><div class="mbar"></div>
@@ -488,7 +488,7 @@ if('serviceWorker' in navigator){
     </div>
   </div>
 </div>
- 
+
 <div class="mbg" id="m-sex">
   <div class="mbox"><div class="mbar"></div>
     <h3 id="ms-title">🏭 Sex qo'shish</h3>
@@ -501,7 +501,7 @@ if('serviceWorker' in navigator){
     </div>
   </div>
 </div>
- 
+
 <div class="mbg" id="m-user">
   <div class="mbox"><div class="mbar"></div>
     <h3 id="mu-title">👤 Foydalanuvchi qo'shish</h3>
@@ -523,7 +523,7 @@ if('serviceWorker' in navigator){
     </div>
   </div>
 </div>
- 
+
 <div class="mbg" id="m-pass">
   <div class="mbox"><div class="mbar"></div>
     <h3 id="mp-title">🔑 Parolni o'zgartirish</h3>
@@ -536,7 +536,7 @@ if('serviceWorker' in navigator){
     </div>
   </div>
 </div>
- 
+
 <div class="mbg" id="m-korxona">
   <div class="mbox"><div class="mbar"></div>
     <h3 id="mk-title">🏭 Korxona nomi</h3>
@@ -547,7 +547,7 @@ if('serviceWorker' in navigator){
     </div>
   </div>
 </div>
- 
+
 <div class="mbg" id="m-settings">
   <div class="mbox"><div class="mbar"></div>
     <h3 id="mset-title">⚙️ Sozlamalar</h3>
@@ -558,7 +558,7 @@ if('serviceWorker' in navigator){
     </div>
   </div>
 </div>
- 
+
 <div class="mbg" id="m-mah-detail">
   <div class="mbox"><div class="mbar"></div>
     <h3 id="md-title">Mahsulot</h3>
@@ -566,7 +566,7 @@ if('serviceWorker' in navigator){
     <div class="mft" id="md-btns"></div>
   </div>
 </div>
- 
+
 <div class="mbg" id="m-tarix-detail">
   <div class="mbox"><div class="mbar"></div>
     <h3 id="mtd-title">📋 Harakat</h3>
@@ -577,7 +577,7 @@ if('serviceWorker' in navigator){
     </div>
   </div>
 </div>
- 
+
 <div class="mbg" id="m-bq-detail">
   <div class="mbox"><div class="mbar"></div>
     <h3 id="mbd-title">📋 Buyurtma</h3>
@@ -588,7 +588,7 @@ if('serviceWorker' in navigator){
     </div>
   </div>
 </div>
- 
+
 <!-- YANGI BUYURTMA MODAL (erkin) -->
 <div class="mbg" id="m-bq-new">
   <div class="mbox"><div class="mbar"></div>
@@ -660,7 +660,7 @@ if('serviceWorker' in navigator){
     </div>
   </div>
 </div>
- 
+
 <!-- MAHSULOT TARIXI MODAL -->
 <div class="mbg" id="m-mah-tarix">
   <div class="mbox"><div class="mbar"></div>
@@ -677,15 +677,15 @@ if('serviceWorker' in navigator){
     </div>
   </div>
 </div>
- 
+
 <script>
 // ===== PATCH v2: Mahsulot tarixi, Sex auto-kirim, Roles, Performance =====
- 
+
 // --- YANGI ROLLAR ---
 // Eski: admin, menejer, skladchi, brigadir
 // Yangi: admin, direktor, buxgalter, omborchi, brigadir
 // Mavjud logika saqlanadi, faqat label va permission qo'shiladi
- 
+
 // Role labels yangilash
 const ROLE_LABELS = {
   uz:{admin:'Admin',direktor:'Direktor',buxgalter:'Buxgalter',omborchi:'Omborchi',brigadir:'Brigadir',menejer:'Menejer',skladchi:'Omborchi'},
@@ -707,7 +707,7 @@ function rolePerm(rol){
   if(rol==='brigadir'){return {canKirim:false,canChiqim:false,canMah:false,canSex:false,canHisobot:false,canAdmin:false,canBuyurtma:true};}
   return p;
 }
- 
+
 // applyRole override — yangi permission tizimi bilan
 window.applyRole = function(){
   if(!CU)return;
@@ -737,7 +737,7 @@ window.applyRole = function(){
     if(fab)fab.classList.toggle('hide',!(p.canMah&&(CU.rol==='admin'||CU.rol==='menejer'||CU.rol==='omborchi'||CU.rol==='skladchi')));
   },50);
 };
- 
+
 // renderUsers override — yangi rol ranglari bilan
 window.renderUsers = function(){
   const div=document.getElementById('users-list');if(!div)return;
@@ -751,7 +751,7 @@ window.renderUsers = function(){
     </div>`;
   }).join('');
 };
- 
+
 // saveUser override — yangi rollar bilan + Firebase Auth
 window.saveUser = function(){
   const G2=id=>document.getElementById(id);
@@ -760,37 +760,46 @@ window.saveUser = function(){
   if(DB.users.find(u=>u.login===login)){toast({uz:'Bu login band',ru:'Логин занят',en:'Login taken'}[LANG],'err');return;}
   const sexId=(rol==='brigadir'||rol==='omborchi')?G2('mu-sex').value:'';
   const newUser={id:uid(),ism,login,parol,rol,sexId,ts:Date.now()};
- 
+
   const _doSave=()=>{
     DB.users.push(newUser);
     save();closeModal('m-user');renderUsers();
     toast(`✅ ${ism} (${(ROLE_LABELS[LANG]||ROLE_LABELS.uz)[rol]||rol})`,'ok');
   };
- 
-  // Firebase Auth ga ham qo'shamiz
+
+  // Firebase Auth ga ham qo'shamiz — ikkinchi app instance orqali
+  // (admin sessiyasi buzilmasligi uchun)
   const email=_loginToEmail(login);
   if(typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length){
-    firebase.auth().createUserWithEmailAndPassword(email,parol)
-      .then(cred=>{
-        newUser.fbUid=cred.user.uid;
-        _doSave();
-        // Admin sifatida qolish uchun hech narsa qilmasa ham bo'ladi —
-        // createUserWithEmailAndPassword currentUser ni o'zgartirmaydi agar boshqa sessiyada bo'lsa
-      })
-      .catch(err=>{
-        if(err.code==='auth/email-already-in-use'){
-          _doSave(); // DB ga qo'shamiz
-        } else {
-          console.warn('Firebase createUser:',err.code);
+    try{
+      // Ikkinchi app instance (admin sessiyasini saqlab)
+      const secondApp = firebase.apps.find(a=>a.name==='secondary') ||
+        firebase.initializeApp(_FB_CFG,'secondary');
+      const secondAuth = secondApp.auth();
+      secondAuth.createUserWithEmailAndPassword(email,parol)
+        .then(cred=>{
+          newUser.fbUid=cred.user.uid;
+          secondAuth.signOut(); // ikkinchi sessiyani yopamiz
           _doSave();
-          toast({uz:'⚠️ Auth: faqat local saqlandi',ru:'⚠️ Auth: только локально',en:'⚠️ Auth: local only'}[LANG],'warn');
-        }
-      });
+        })
+        .catch(err=>{
+          if(err.code==='auth/email-already-in-use'){
+            _doSave();
+          } else {
+            console.warn('Firebase createUser:',err.code);
+            _doSave();
+            toast({uz:'⚠️ Auth: faqat local saqlandi',ru:'⚠️ Auth: только локально',en:'⚠️ Auth: local only'}[LANG],'warn');
+          }
+        });
+    }catch(e){
+      console.warn('Secondary app error:',e);
+      _doSave();
+    }
   } else {
     _doSave();
   }
 };
- 
+
 // mu-rol select — yangi rollar
 const muRolEl=document.getElementById('mu-rol');
 if(muRolEl){
@@ -807,10 +816,10 @@ if(muRolEl){
     if(wrap)wrap.style.display=(this.value==='brigadir'||this.value==='omborchi')?'block':'none';
   };
 }
- 
+
 // --- MAHSULOT TARIXI ---
 let _mahTarixId=null, _mahTarixFilter='';
- 
+
 window.openMahTarix = function(mahId){
   _mahTarixId=mahId;
   _mahTarixFilter='';
@@ -824,14 +833,14 @@ window.openMahTarix = function(mahId){
   renderMahTarix();
   openModal('m-mah-tarix');
 };
- 
+
 window.filterMahTarix = function(tur,btn){
   _mahTarixFilter=tur;
   document.querySelectorAll('#m-mah-tarix .tabs .tab').forEach(b=>b.classList.remove('on'));
   if(btn)btn.classList.add('on');
   renderMahTarix();
 };
- 
+
 window.renderMahTarix = function(){
   const div=document.getElementById('mmt-body');if(!div||!_mahTarixId)return;
   const q=(document.getElementById('mmt-q')||{}).value||'';
@@ -842,14 +851,14 @@ window.renderMahTarix = function(){
     if(qL&&!(sexNom(h.sexId).toLowerCase().includes(qL)||(h.sana||'').includes(qL)||(h.zayafka||'').toLowerCase().includes(qL)||(h.izoh||'').toLowerCase().includes(qL)))return false;
     return true;
   }).sort((a,b)=>b.ts-a.ts);
- 
+
   if(!list.length){div.innerHTML=`<div class="mt-empty"><div class="ei">📭</div><div>${t('topilmadi')}</div></div>`;return;}
   const lTotal={uz:'Jami',ru:'Итого',en:'Total'}[LANG];
   const totalKirim=list.filter(h=>h.tur==='kirim').reduce((a,h)=>a+h.miqdor,0);
   const totalChiqim=list.filter(h=>h.tur==='chiqim').reduce((a,h)=>a+h.miqdor,0);
   const m=DB.mahsulotlar.find(x=>x.id===_mahTarixId);
   const birlik=m?m.birlik||'dona':'dona';
- 
+
   div.innerHTML=`
     <div style="display:flex;gap:9px;margin-bottom:10px">
       <div style="flex:1;background:rgba(16,185,129,.1);border-radius:10px;padding:9px;text-align:center">
@@ -879,7 +888,7 @@ window.renderMahTarix = function(){
     </div>`;
   }).join('');
 };
- 
+
 // renderMah patch — Tarix tugmasi qo'shish
 const _origRenderMah = window.renderMah;
 window.renderMah = function(){
@@ -894,12 +903,12 @@ window.renderMah = function(){
   });
   const div=G2('mah-list');if(!div)return;
   if(!list.length){div.innerHTML=`<div class="mt-empty"><div class="ei">📦</div><div>${t('topilmadi')}</div></div>`;return;}
- 
+
   // Batched render for 1000+ items
   const BATCH=50;
   const visible=list.slice(0,BATCH);
   const remaining=list.length-BATCH;
- 
+
   div.innerHTML=visible.map(m=>{
     const isLow=m.miqdor<(m.min||minL);
     const hasTarix=DB.harakatlar.some(h=>h.mahId===m.id);
@@ -916,7 +925,7 @@ window.renderMah = function(){
       </div>
     </div>`;
   }).join('');
- 
+
   if(remaining>0){
     const loadMore=document.createElement('button');
     loadMore.className='btn btn-gh btn-bl';loadMore.style.marginTop='8px';
@@ -944,7 +953,7 @@ window.renderMah = function(){
     div.appendChild(loadMore);
   }
 };
- 
+
 // openMahDetail patch — Tarix tugmasi qo'shish
 const _origOpenMahDetail = window.openMahDetail;
 window.openMahDetail = function(id){
@@ -962,7 +971,7 @@ window.openMahDetail = function(id){
     }
   },50);
 };
- 
+
 // --- SEX AUTO KIRIM: Chiqim → Sex omboriga auto-qo'shish ---
 // saveChiqim ni patch qilamiz — original logikani saqlab, sex ombor kirimini qo'shamiz
 const _origSaveChiqim = window.saveChiqim;
@@ -975,7 +984,7 @@ window.saveChiqim = function(){
   if(miq>m.miqdor){toast(`${t('notEnough')} ${m.miqdor} ${m.birlik||'dona'}`,'warn');return;}
   const sexId=G2('ch-sex').value;
   const targetSex=DB.sexlar.find(s=>s.id===sexId);
- 
+
   // === ORIGINAL CHIQIM LOGIKASI ===
   const existing=DB.harakatlar.find(h=>
     h.tur==='chiqim' && h.mahId===mahId && h.sexId===sexId &&
@@ -987,7 +996,7 @@ window.saveChiqim = function(){
       miqdor:miq,sana,zayafka:zayafkaKod,maqsad:G2('ch-maqsad').value,izoh:G2('ch-izoh').value,user:CU.id,ts:Date.now()});
   }
   m.miqdor-=miq;
- 
+
   // === SEX OMBORI AUTO-KIRIM ===
   // Ombordan sexga chiqsa — sexdagi mahsulot miqdorini oshirish
   // Faqat shu sex uchun alohida mahsulot yozuvi bo'lsa yangilanadi
@@ -1013,7 +1022,7 @@ window.saveChiqim = function(){
   }
   // Agar sexda alohida mahsulot yo'q bo'lsa — faqat chiqim yoziladi (hozirgi xulq)
   // Sex hisoboti esa harakatlar orqali ko'rsatiladi (sexId filter bilan)
- 
+
   // === ZAYAFKA LIMIT TEKSHIRUVI ===
   if(!DB.zayafkaLimitlar)DB.zayafkaLimitlar=[];
   const limit=DB.zayafkaLimitlar.find(l=>l.zayafka===zayafkaKod&&l.mahId===mahId);
@@ -1024,12 +1033,12 @@ window.saveChiqim = function(){
     if(jami>limit.limit){addNotif(`🚨 Limit OSHDI! — ${zayafkaKod}`,`${m.nom}: ${jami}${birlik} / limit ${limit.limit}${birlik} (+${pct-100}% oshdi)`,'err');toast(`🚨 LIMIT OSHDI! ${zayafkaKod}: ${jami}/${limit.limit}${birlik}`,'err');}
     else if(pct>=80){addNotif(`⚠️ Limit yaqinlashdi — ${zayafkaKod}`,`${m.nom}: ${jami}/${limit.limit}${birlik} (${pct}%)`,'warn');}
   }
- 
+
   save();renderHome();renderMah();showStok();loadMah4Sex('ch-sex','ch-mah');
   G2('ch-miq').value=1;G2('ch-izoh').value='';
   toast(t('chiqimSaved'));checkLowStock();
 };
- 
+
 // ============================================================
 // FIREBASE FIRESTORE REAL-TIME SYNC — PATCH v3
 // ============================================================
@@ -1047,7 +1056,7 @@ let _fbUnsubscribe = null;   // realtime listener cleanup
 let _syncPending = false;
 let _lastPushTs = 0;
 let _fbReady = false;
- 
+
 // --- Sync status indicator (topbarda ko'rinadi) ---
 (function injectSyncUI(){
   const tr = document.querySelector('.top-right');
@@ -1064,7 +1073,7 @@ function _setSyncDot(state){
   d.style.background = state==='ok'?'var(--ok)': state==='sync'?'var(--warn)':'var(--danger)';
   d.title = state==='ok'?'☁️ Ulangan': state==='sync'?'⏳ Sync...':'❌ Offline';
 }
- 
+
 // --- Firebase SDK yuklash (CDN, defer) ---
 function _loadFirebase(){
   return new Promise((res, rej) => {
@@ -1085,7 +1094,7 @@ function _loadFirebase(){
     });
   });
 }
- 
+
 // --- Init Firestore ---
 async function _initFirebase(){
   try {
@@ -1108,7 +1117,7 @@ async function _initFirebase(){
     _setSyncDot('err');
   }
 }
- 
+
 // --- Firestore dan bir marta yuklash ---
 async function _fbLoad(){
   if(!_fbReady || !_fbDB) return false;
@@ -1131,7 +1140,7 @@ async function _fbLoad(){
     return false;
   }
 }
- 
+
 // --- Firestore ga push (debounced 1.5s) ---
 let _pushTimer = null;
 function _fbPush(){
@@ -1152,7 +1161,7 @@ function _fbPush(){
     }
   }, 1500);
 }
- 
+
 // --- Real-time listener: boshqa qurilma o'zgarsa yangilanadi ---
 function _startRealtimeListener(){
   if(!_fbDB) return;
@@ -1180,7 +1189,7 @@ function _startRealtimeListener(){
     _setSyncDot('err');
   });
 }
- 
+
 // --- save() override: local + Firebase ---
 const _origSave_fb = window.save;
 window.save = function(){
@@ -1189,7 +1198,7 @@ window.save = function(){
   // 2. Firebase ga async push (debounced)
   _fbPush();
 };
- 
+
 // --- load() override: local ni yuklab, keyin remote dan yangilanadi ---
 const _origLoad_fb = window.load;
 window.load = function(){
@@ -1207,7 +1216,7 @@ window.load = function(){
       });
     });
 };
- 
+
 // --- doLogout override: Firebase sign out ham ---
 const _origLogout_fb = window.doLogout;
 window.doLogout = function(){
@@ -1223,7 +1232,7 @@ window.doLogout = function(){
   G('l-pw').value='';
   G('lerr').style.display='none';
 };
- 
+
 // --- saveUser override: Firebase Auth ga ham qo'shish ---
 const _origSaveUser_fb = window.saveUser;
 window.saveUser = function(){
@@ -1234,7 +1243,7 @@ window.saveUser = function(){
   // saveUser funksiyasi o'zida Firebase Auth ga ham qo'shadi
   _origSaveUser_fb && _origSaveUser_fb();
 };
- 
+
 // --- deleteUser override: Permission check ---
 const _origDeleteUser = window.deleteUser;
 window.deleteUser = function(id){
@@ -1243,7 +1252,7 @@ window.deleteUser = function(id){
   }
   _origDeleteUser && _origDeleteUser(id);
 };
- 
+
 // --- Multi-device conflict resolution: last-write-wins + ts ---
 // Har bir yozuvda ts (timestamp) bor — eng yangi yozuv ustunlik qiladi
 // Harakatlar uchun: id bo'yicha merge (bir xil id bo'lsa — yangi ts li ustunlik)
@@ -1255,7 +1264,7 @@ function _mergeArrayById(local, remote){
   });
   return Object.values(map);
 }
- 
+
 // Real-time listener da to'liq merge ishlatish
 (function patchListener(){
   // Override _startRealtimeListener to use merge
@@ -1284,35 +1293,36 @@ function _mergeArrayById(local, remote){
     }, err => { _setSyncDot('err'); });
   };
 })();
- 
+
 // Firebase Auth da barcha mavjud foydalanuvchilarni ro'yxatdan o'tkazish
 // (birinchi marta yoki yangi qurilmada)
 async function _bootstrapAdminAuth(){
   if(!firebase.apps||!firebase.apps.length)return;
-  const auth=firebase.auth();
-  // Faqat hozir kirgan foydalanuvchi yo'q bo'lsa bajaramiz
-  if(auth.currentUser)return;
+  // Ikkinchi app instance — joriy sessiyani buzmasdan
+  let secApp;
+  try{
+    secApp = firebase.apps.find(a=>a.name==='secondary') ||
+      firebase.initializeApp(_FB_CFG,'secondary');
+  }catch(e){console.warn('Bootstrap secondary app:',e);return;}
+  const secAuth = secApp.auth();
   
-  // DB dagi har bir foydalanuvchi uchun Firebase Auth akkauntini yaratishga harakat qilamiz
-  // (agar allaqachon bor bo'lsa — xato, lekin ignore qilamiz)
   for(const u of DB.users){
+    if(u.fbUid)continue; // allaqachon bog'langan
     const email=_loginToEmail(u.login);
     try{
-      await auth.createUserWithEmailAndPassword(email,u.parol);
-      // Yaratildi — darhol chiqamiz (login uchun ochiq emas)
-      await auth.signOut();
-      if(!u.fbUid&&auth.currentUser){u.fbUid=auth.currentUser.uid;}
+      const cred = await secAuth.createUserWithEmailAndPassword(email,u.parol);
+      u.fbUid = cred.user.uid;
+      await secAuth.signOut();
     }catch(err){
       if(err.code!=='auth/email-already-in-use'){
         console.warn('Bootstrap auth for',u.login,':',err.code);
       }
-      // email-already-in-use — allaqachon bor, OK
     }
   }
-  // Barcha foydalanuvchilar ro'yxatdan o'tkazildi
+  save(); // fbUid larni saqlaymiz
   console.log('Auth bootstrap completed');
 }
- 
+
 // --- Sync status button sozlamalarda
 (function addSyncStatus(){
   const settingsCard = document.querySelector('#pg-sozlamalar .card');
@@ -1328,7 +1338,7 @@ async function _bootstrapAdminAuth(){
   `;
   settingsCard.insertBefore(row, settingsCard.firstChild);
 })();
- 
+
 window.forceFbSync = async function(){
   toast({uz:'⏳ Sync...',ru:'⏳ Синхронизация...',en:'⏳ Syncing...'}[LANG],'warn');
   _setSyncDot('sync');
@@ -1344,11 +1354,11 @@ window.forceFbSync = async function(){
     _setSyncDot('err');
   }
 };
- 
+
 // Online/offline events
 window.addEventListener('online', ()=>{ _initFirebase(); _setSyncDot('sync'); });
 window.addEventListener('offline', ()=>{ _setSyncDot('err'); toast({uz:'📵 Offline — local saqlanmoqda',ru:'📵 Офлайн — локальное сохранение',en:'📵 Offline — saving locally'}[LANG],'warn'); });
- 
+
 // --- PERFORMANCE: renderTarix virtualization ---
 const _origRenderTarix=window.renderTarix;
 window.renderTarix=function(){
@@ -1386,7 +1396,7 @@ window.renderTarix=function(){
     div.appendChild(lb);
   }
 };
- 
+
 console.log('XM Pro Patch v3 — Firebase Firestore sync loaded ✅');
 </script>
 <div class="mbg" id="m-zlimit">
@@ -1406,7 +1416,7 @@ console.log('XM Pro Patch v3 — Firebase Firestore sync loaded ✅');
     </div>
   </div>
 </div>
- 
+
 <script>
 // ===== TRANSLATIONS =====
 const T = {
@@ -1482,7 +1492,7 @@ const T = {
 };
 let LANG = 'uz';
 function t(k){return (T[LANG]||T.uz)[k]||k;}
- 
+
 // ===== DB =====
 const DB_KEY='mr_v5';
 let DB={
@@ -1493,11 +1503,11 @@ let DB={
 let CU=null,editMahId=null,editSexId=null,delTarixId=null,confirmCb=null;
 let tarixTur='',mahSexF='',hibMode='kunlik',bqTur='ombor',bqBirlik='dona',mahBirlik='dona';
 let isDark=true;
- 
+
 // ===== IndexedDB ENGINE =====
 let _idb=null;
 const IDB_NAME='XMProDB', IDB_STORE='data', IDB_VER=1;
- 
+
 function openIDB(){
   return new Promise((res,rej)=>{
     if(_idb){res(_idb);return;}
@@ -1526,7 +1536,7 @@ function idbGet(key){
     req.onerror=()=>rej(req.error);
   }));
 }
- 
+
 function save(){
   idbSet(DB_KEY, JSON.stringify(DB)).catch(()=>{
     // IndexedDB ishlamasa localStorage ga fallback
@@ -1535,7 +1545,7 @@ function save(){
     }
   });
 }
- 
+
 function load(){
   return openIDB()
     .then(()=>idbGet(DB_KEY))
@@ -1552,7 +1562,7 @@ function load(){
       try{const d=localStorage.getItem(DB_KEY);if(d){const p=JSON.parse(d);DB=Object.assign(DB,p);}}catch(e){}
     });
 }
- 
+
 function archiveOldHistory(){
   const cutoff=new Date();cutoff.setMonth(cutoff.getMonth()-3);
   const cutStr=cutoff.toISOString().slice(0,10);
@@ -1565,7 +1575,7 @@ function archiveOldHistory(){
 function G(id){return document.getElementById(id);}
 function today(){return new Date().toISOString().slice(0,10);}
 function uid(){return 'i'+Date.now()+Math.random().toString(36).slice(2,5);}
- 
+
 // ===== THEME =====
 function toggleTheme(){
   isDark=!isDark;
@@ -1577,7 +1587,7 @@ function loadTheme(){
   const t=localStorage.getItem('mr_theme');
   if(t==='light'){isDark=false;document.body.classList.add('light');G('theme-icon').textContent='☀️';}
 }
- 
+
 // ===== LANG =====
 function setLang(l,btn){
   LANG=l;localStorage.setItem('mr_lang',l);
@@ -1640,7 +1650,7 @@ function applyLang(){
   if(G('add-user-wrap')&&CU&&CU.rol==='admin')G('add-user-wrap').innerHTML=`<button class="btn btn-a btn-bl" style="margin-bottom:14px" onclick="newUser()">${t('addUser')}</button>`;
   if(G('sex-add-btn-wrap')&&CU&&CU.rol==='admin')G('sex-add-btn-wrap').innerHTML=`<button class="btn btn-a btn-bl" style="margin-bottom:11px" onclick="newSex()">${t('sexAdd')}</button>`;
 }
- 
+
 // ===== TOAST / CONFIRM =====
 function toast(msg,type='ok'){
   const el=G('toast');el.textContent=msg;el.className='toast '+type;
@@ -1659,22 +1669,22 @@ function closeModal(id){
   // Kamerani to'xtat (buyurtma modal yopilganda)
   if(id==='m-bq-new')stopKamera();
 }
- 
+
 // ===== LOGIN (Firebase Auth) =====
 function _loginToEmail(login){
   // Login @ belgisi bo'lmasa, orqasiga @xmpro.app qo'shamiz
   if(login.includes('@'))return login;
   return login.toLowerCase().replace(/[^a-z0-9._\-]/g,'_')+'@xmpro.app';
 }
- 
+
 function doLogin(){
   const login=G('l-em').value.trim(),pw=G('l-pw').value.trim();
   G('lerr').style.display='none';
   if(!login||!pw){G('lerr').style.display='block';G('lerr').textContent=t('err');return;}
- 
+
   const loginBtn=G('ll-btn');
   if(loginBtn){loginBtn.disabled=true;loginBtn.textContent='⏳...';}
- 
+
   // Firebase Auth orqali kirish
   const email=_loginToEmail(login);
   const tryAuth=()=>{
@@ -1688,7 +1698,7 @@ function doLogin(){
         console.warn('Auth error:',err.code);
       });
   };
- 
+
   // Firebase tayyor bo'lgan-bo'lmaganini tekshiramiz
   if(typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length){
     tryAuth();
@@ -1713,13 +1723,13 @@ function doLogin(){
     },2000);
   }
 }
- 
+
 function tryAutoLogin(){
   // Firebase onAuthStateChanged hal qiladi — bu funksiya endi faqat
   // Firebase tayyor bo'lgunicha placeholder rolini o'ynaydi
   return false;
 }
- 
+
 // Firebase Auth holat kuzatuvchi — dastur ochilganda va login muvaffaqiyatli bo'lganda chaqiriladi
 function _setupAuthListener(){
   if(typeof firebase==='undefined'||!firebase.apps||!firebase.apps.length)return;
@@ -1761,7 +1771,7 @@ function _setupAuthListener(){
     }
   });
 }
- 
+
 function doLogout(){
   localStorage.removeItem('mr_rem');
   CU=null;
@@ -1776,7 +1786,7 @@ function doLogout(){
   // Listener cleanup
   if(typeof _fbUnsubscribe!=='undefined'&&_fbUnsubscribe){_fbUnsubscribe();_fbUnsubscribe=null;}
 }
- 
+
 // ===== INIT =====
 function initApp(){
   G('userNm').textContent=CU.ism;G('userAv').textContent=CU.ism[0].toUpperCase();
@@ -1795,7 +1805,7 @@ function applyRole(){
   G('add-user-wrap').innerHTML=isAdmin?`<button class="btn btn-a btn-bl" style="margin-bottom:14px" onclick="newUser()">${t('addUser')}</button>`:'';
   G('sex-add-btn-wrap').innerHTML=isAdmin?`<button class="btn btn-a btn-bl" style="margin-bottom:11px" onclick="newSex()">${t('sexAdd')}</button>`:'';
 }
- 
+
 // ===== NAV =====
 function navTo(pg,btn){
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
@@ -1814,13 +1824,13 @@ function navTo(pg,btn){
   if(pg==='sex')renderSex();
 }
 function fabClick(){newMah();}
- 
+
 // ===== HELPERS =====
 function sexNom(id){const s=DB.sexlar.find(x=>x.id===id);return s?s.nom:'—';}
 function mahNom(id){const m=DB.mahsulotlar.find(x=>x.id===id);return m?m.nom:'—';}
 function userNom(id){const u=DB.users.find(x=>x.id===id);return u?u.ism:'—';}
 function adj(id,d){const el=G(id);el.value=Math.max(1,(parseInt(el.value)||1)+d);}
- 
+
 // ===== BIRLIK =====
 function selBirlik(btn,val){
   document.querySelectorAll('#m-mah .birlik-btn').forEach(b=>b.classList.remove('on'));
@@ -1830,7 +1840,7 @@ function selBqBirlik(btn,val){
   document.querySelectorAll('#m-bq-new .birlik-btn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');bqBirlik=val;G('bqn-birlik').value=val;
 }
- 
+
 // ===== HOME =====
 function renderHome(){
   const minL=DB.settings.minLimit||10;
@@ -1852,7 +1862,7 @@ function renderHome(){
     <div class="ri-r"><div class="ri-v" style="color:${h.tur==='kirim'?'var(--ok)':'var(--danger)'}">${h.tur==='kirim'?'+':'-'}${h.miqdor}</div></div>
   </div>`).join(''):`<div class="mt-empty"><div class="ei">📭</div><div>${t('empty')}</div></div>`;
 }
- 
+
 // ===== MAH =====
 function newMah(){
   editMahId=null;G('mm-title').textContent={uz:'📦 Mahsulot qo\'shish',ru:'📦 Добавить товар',en:'📦 Add product'}[LANG];
@@ -1961,7 +1971,7 @@ function deleteMah(id){
     DB.mahsulotlar=DB.mahsulotlar.filter(x=>x.id!==id);save();renderMah();renderHome();toast(t('deleted'),'warn');
   });
 }
- 
+
 // ===== SEXLAR =====
 function newSex(){
   editSexId=null;G('ms-title').textContent={uz:'🏭 Sex qo\'shish',ru:'🏭 Добавить цех',en:'🏭 Add department'}[LANG];
@@ -2045,7 +2055,7 @@ function deleteSex(id){
     DB.sexlar=DB.sexlar.filter(x=>x.id!==id);save();renderSex();renderHome();renderMahTabs();toast(t('deleted'),'warn');
   });
 }
- 
+
 // ===== HARAKAT =====
 function swH(mode,btn){
   ['kirim','chiqim','tarix'].forEach(m=>G('hf-'+m).style.display=m===mode?'block':'none');
@@ -2118,7 +2128,7 @@ function saveChiqim(){
   G('ch-miq').value=1;G('ch-izoh').value='';
   toast(t('chiqimSaved'));checkLowStock();
 }
- 
+
 // ===== TARIX =====
 function ftTur(tur,btn){
   tarixTur=tur;document.querySelectorAll('#hf-tarix .tabs .tab').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');renderTarix();
@@ -2174,7 +2184,7 @@ function delTarix(){
     save();renderTarix();renderHome();renderMah();toast(t('deleted'),'warn');
   });
 }
- 
+
 // ===== BUYURTMA =====
 function selBqTur(tur,btn){
   bqTur=tur;
@@ -2403,7 +2413,7 @@ function updateBuyurtmaBadge(){
   if(!CU)return;const isA=CU.rol==='admin'||CU.rol==='menejer';const btn=G('nav-bq');if(!btn)return;
   if(isA){const p=DB.buyurtmalar.filter(b=>b.status==='pending').length;btn.querySelector('.ni').textContent=p>0?`📋(${p})`:'📋';}
 }
- 
+
 // ===== NOTIFICATIONS =====
 function addNotif(title,msg,type='info'){
   DB.notiflar.unshift({id:uid(),title,msg,type,ts:Date.now()});
@@ -2431,7 +2441,7 @@ function checkLowStock(){
   const low=DB.mahsulotlar.filter(m=>m.miqdor<(m.min||minL));
   if(low.length)addNotif('⚠️ '+(LANG==='uz'?'Kam qolgan':LANG==='ru'?'Мало на складе':'Low stock'),low.length+' '+(LANG==='uz'?'ta mahsulot':LANG==='ru'?'товаров':' products'),'warn');
 }
- 
+
 // ===== ZAYAFKA LIMITLARI =====
 function openZlimitModal(){
   if(!DB.zayafkaLimitlar)DB.zayafkaLimitlar=[];
@@ -2498,7 +2508,7 @@ document.addEventListener('click',e=>{
   const panel=G('notif-panel');
   if(panel&&panel.classList.contains('open')&&!panel.contains(e.target)&&!e.target.closest('.icon-btn'))panel.classList.remove('open');
 });
- 
+
 // ===== HISOBOT =====
 function swHib(mode,btn){
   hibMode=mode;document.querySelectorAll('#pg-hisobot .tabs .tab').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');renderHib();
@@ -2660,7 +2670,7 @@ ${content}
 <hr style="border:none;border-top:1px solid #ddd;margin:12px 0">
 <div style="text-align:center;color:#999;font-size:10px">XM Pro — Ombor tizimi</div>
 </body></html>`;
- 
+
   // Web2App: ilovaning ichida ko'rsatish + Share
   const existing=document.getElementById('print-viewer-bg');
   if(existing)existing.remove();
@@ -2681,7 +2691,7 @@ ${content}
   window._lastHisobotHtml=htmlContent;
   window._lastHisobotSana=today();
 }
- 
+
 function shareHisobot(){
   const html=window._lastHisobotHtml||'';
   const fileName='hisobot_'+(window._lastHisobotSana||today())+'.html';
@@ -2706,7 +2716,7 @@ function shareHisobotText(html){
   }
   toast({uz:'❌ Ulashib bo\'lmadi',ru:'❌ Не удалось',en:'❌ Failed'}[LANG],'err');
 }
- 
+
 // ===== USERS =====
 function renderUsers(){
   if(!CU||CU.rol!=='admin')return;
@@ -2740,26 +2750,27 @@ function saveUser(){
   };
   
   if(typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length){
-    const saverAuth=firebase.auth();
-    // createUserWithEmailAndPassword — Firebase Auth da yaratamiz
-    saverAuth.createUserWithEmailAndPassword(email,parol)
-      .then(cred=>{
-        newUser.fbUid=cred.user.uid;
-        // Yaratgandan keyin yana admin sifatida tizimda qolamiz
-        // (currentUser admin bo'lgani uchun bu amaliyot uni chiqarmaydi)
-        _doSave();
-      })
-      .catch(err=>{
-        if(err.code==='auth/email-already-in-use'){
-          // Auth da bor, DB da yo'q — shunchaki DB ga qo'shamiz
+    try{
+      // Ikkinchi app instance — admin sessiyasini buzmasdan yangi user yaratadi
+      const secApp = firebase.apps.find(a=>a.name==='secondary') ||
+        firebase.initializeApp(_FB_CFG,'secondary');
+      const secAuth = secApp.auth();
+      secAuth.createUserWithEmailAndPassword(email,parol)
+        .then(cred=>{
+          newUser.fbUid=cred.user.uid;
+          secAuth.signOut(); // ikkinchi sessiyani yopamiz
           _doSave();
-        } else {
-          console.warn('Auth createUser error:',err.code);
-          // Auth xatosi bo'lsa ham DB ga qo'shamiz (oflayn rejim)
-          _doSave();
-          toast({uz:'⚠️ Auth xatosi, faqat local saqlandi',ru:'⚠️ Ошибка Auth, сохранено локально',en:'⚠️ Auth error, saved locally only'}[LANG],'warn');
-        }
-      });
+        })
+        .catch(err=>{
+          if(err.code==='auth/email-already-in-use'){
+            _doSave();
+          } else {
+            console.warn('Auth createUser error:',err.code);
+            _doSave();
+            toast({uz:'⚠️ Auth xatosi, faqat local saqlandi',ru:'⚠️ Ошибка Auth, сохранено локально',en:'⚠️ Auth error, saved locally only'}[LANG],'warn');
+          }
+        });
+    }catch(e){console.warn('Secondary app:',e);_doSave();}
   } else {
     _doSave();
   }
@@ -2773,7 +2784,7 @@ function deleteUser(id){
     // Lekin foydalanuvchi DB da bo'lmagani uchun login qila olmaydi
   });
 }
- 
+
 // ===== SETTINGS =====
 function saveKorxona(){
   DB.settings.korxona=G('kn-val').value.trim()||'XM Pro';
@@ -2802,7 +2813,7 @@ function savePass(){
     }
   }
 }
- 
+
 function confirmArchive(){
   confirm2(
     {uz:'Arxiv',ru:'Архив',en:'Archive'}[LANG],
@@ -2811,7 +2822,7 @@ function confirmArchive(){
     {uz:'O\'chirish',ru:'Удалить',en:'Delete'}[LANG]
   );
 }
- 
+
 // ===== EXPORT/IMPORT =====
 function showExportDialog(json,fileName){
   const existing=document.getElementById('export-modal-bg');
@@ -2837,7 +2848,7 @@ function showExportDialog(json,fileName){
   document.body.appendChild(bg);
   bg.addEventListener('click',e=>{if(e.target===bg)bg.remove();});
 }
- 
+
 function exportData(){
   const json=JSON.stringify(DB,null,2);
   const fileName='xmpro_'+today()+'.json';
@@ -2868,7 +2879,7 @@ function exportFallback(json,fileName){
   }
   showExportDialog(json,fileName);
 }
- 
+
 function importData(inp){
   const file=inp.files[0];if(!file)return;
   const r=new FileReader();
@@ -2880,7 +2891,7 @@ function importData(inp){
     }catch(e){toast({uz:'Xato',ru:'Ошибка',en:'Error'}[LANG],'err');}inp.value='';
   };r.readAsText(file);
 }
- 
+
 function showUserMenu(){
   const m=document.getElementById('user-menu');
   m.style.display=m.style.display==='none'?'block':'none';
@@ -2915,4 +2926,3 @@ load().then(()=>{
 </script>
 </body>
 </html>
- 
