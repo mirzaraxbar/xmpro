@@ -752,52 +752,17 @@ window.renderUsers = function(){
   }).join('');
 };
 
-// saveUser override — yangi rollar bilan + Firebase Auth
+// saveUser override — yangi rollar bilan (faqat Firestore, Firebase Auth yo'q)
 window.saveUser = function(){
   const G2=id=>document.getElementById(id);
   const ism=G2('mu-ism').value.trim(),login=G2('mu-login').value.trim(),parol=G2('mu-parol').value.trim(),rol=G2('mu-rol').value;
   if(!ism||!login||parol.length<4){toast(t('required'),'err');return;}
   if(DB.users.find(u=>u.login===login)){toast({uz:'Bu login band',ru:'Логин занят',en:'Login taken'}[LANG],'err');return;}
   const sexId=(rol==='brigadir'||rol==='omborchi')?G2('mu-sex').value:'';
-  const newUser={id:uid(),ism,login,parol,rol,sexId,ts:Date.now()};
-
-  const _doSave=()=>{
-    DB.users.push(newUser);
-    save();closeModal('m-user');renderUsers();
-    toast(`✅ ${ism} (${(ROLE_LABELS[LANG]||ROLE_LABELS.uz)[rol]||rol})`,'ok');
-  };
-
-  // Firebase Auth ga ham qo'shamiz — ikkinchi app instance orqali
-  // (admin sessiyasi buzilmasligi uchun)
-  const email=_loginToEmail(login);
-  if(typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length){
-    try{
-      // Ikkinchi app instance (admin sessiyasini saqlab)
-      const secondApp = firebase.apps.find(a=>a.name==='secondary') ||
-        firebase.initializeApp(_FB_CFG,'secondary');
-      const secondAuth = secondApp.auth();
-      secondAuth.createUserWithEmailAndPassword(email,parol)
-        .then(cred=>{
-          newUser.fbUid=cred.user.uid;
-          secondAuth.signOut(); // ikkinchi sessiyani yopamiz
-          _doSave();
-        })
-        .catch(err=>{
-          if(err.code==='auth/email-already-in-use'){
-            _doSave();
-          } else {
-            console.warn('Firebase createUser:',err.code);
-            _doSave();
-            toast({uz:'⚠️ Auth: faqat local saqlandi',ru:'⚠️ Auth: только локально',en:'⚠️ Auth: local only'}[LANG],'warn');
-          }
-        });
-    }catch(e){
-      console.warn('Secondary app error:',e);
-      _doSave();
-    }
-  } else {
-    _doSave();
-  }
+  DB.users.push({id:uid(),ism,login,parol,rol,sexId,ts:Date.now()});
+  save(); // Firestore ga avtomatik sync bo'ladi (_fbPush orqali)
+  closeModal('m-user');renderUsers();
+  toast(`✅ ${ism} | login: ${login} / parol: ${parol}`,'ok');
 };
 
 // mu-rol select — yangi rollar
@@ -1672,11 +1637,8 @@ function closeModal(id){
 }
 
 // ===== LOGIN (Firebase Auth) =====
-function _loginToEmail(login){
-  // Login @ belgisi bo'lmasa, orqasiga @xmpro.app qo'shamiz
-  if(login.includes('@'))return login;
-  return login.toLowerCase().replace(/[^a-z0-9._\-]/g,'_')+'@xmpro.app';
-}
+// ===== LOGIN (Firestore orqali — Firebase Auth ishlatilmaydi) =====
+// Sabab: createUserWithEmailAndPassword admin sessiyasini buzadi
 
 function doLogin(){
   const login=G('l-em').value.trim(),pw=G('l-pw').value.trim();
@@ -1686,91 +1648,54 @@ function doLogin(){
   const loginBtn=G('ll-btn');
   if(loginBtn){loginBtn.disabled=true;loginBtn.textContent='⏳...';}
 
-  // Firebase Auth orqali kirish
-  const email=_loginToEmail(login);
-  const tryAuth=()=>{
-    const auth=firebase.auth();
-    auth.signInWithEmailAndPassword(email,pw)
-      .then(()=>{/* onAuthStateChanged hal qiladi */})
-      .catch(err=>{
-        if(loginBtn){loginBtn.disabled=false;loginBtn.textContent=t('login');}
-        G('lerr').style.display='block';
-        G('lerr').textContent=t('err');
-        console.warn('Auth error:',err.code);
-      });
+  // Avval Firestore dan yangi ma'lumotlarni yuklaymiz, keyin tekshiramiz
+  const _checkLogin=()=>{
+    const u=DB.users.find(x=>x.login===login&&x.parol===pw);
+    if(u){
+      CU=u;
+      localStorage.setItem('mr_rem',JSON.stringify({login,parol:pw}));
+      if(loginBtn){loginBtn.disabled=false;loginBtn.textContent=t('login');}
+      G('login').style.display='none';G('shell').style.display='flex';
+      initApp();
+    } else {
+      if(loginBtn){loginBtn.disabled=false;loginBtn.textContent=t('login');}
+      G('lerr').style.display='block';
+      G('lerr').textContent=t('err');
+    }
   };
 
-  // Firebase tayyor bo'lgan-bo'lmaganini tekshiramiz
-  if(typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length){
-    tryAuth();
-  } else {
-    // Firebase hali yuklanmagan — bir oz kutib qayta urinish
-    setTimeout(()=>{
-      if(typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length){
-        tryAuth();
-      } else {
-        // Firebase yo'q — local fallback (oflayn rejim)
-        const u=DB.users.find(x=>x.login===login&&x.parol===pw);
-        if(u){
-          CU=u;
-          localStorage.setItem('mr_rem',JSON.stringify({login,parol:pw}));
-          G('login').style.display='none';G('shell').style.display='flex';
-          initApp();
-        } else {
-          G('lerr').style.display='block';G('lerr').textContent=t('err');
+  // Firebase tayyor bo'lsa — avval Firestore dan yangi users ni yuklaymiz
+  if(_fbReady && _fbDB){
+    _fbDB.doc(_FB_DOC).get().then(snap=>{
+      if(snap.exists){
+        const remote=snap.data();
+        if(remote.users&&remote.users.length>0){
+          DB.users=remote.users;
+          idbSet(DB_KEY,JSON.stringify(DB)).catch(()=>{});
         }
-        if(loginBtn){loginBtn.disabled=false;loginBtn.textContent=t('login');}
       }
-    },2000);
+      _checkLogin();
+    }).catch(()=>_checkLogin());
+  } else {
+    // Firebase yo'q — local DB dan tekshiramiz
+    _checkLogin();
   }
 }
 
 function tryAutoLogin(){
-  // Firebase onAuthStateChanged hal qiladi — bu funksiya endi faqat
-  // Firebase tayyor bo'lgunicha placeholder rolini o'ynaydi
+  const r=localStorage.getItem('mr_rem');
+  if(!r)return false;
+  try{
+    const {login,parol}=JSON.parse(r);
+    const u=DB.users.find(x=>x.login===login&&x.parol===parol);
+    if(u){CU=u;G('login').style.display='none';G('shell').style.display='flex';initApp();return true;}
+    else{localStorage.removeItem('mr_rem');return false;}
+  }catch(e){localStorage.removeItem('mr_rem');}
   return false;
 }
 
-// Firebase Auth holat kuzatuvchi — dastur ochilganda va login muvaffaqiyatli bo'lganda chaqiriladi
 function _setupAuthListener(){
-  if(typeof firebase==='undefined'||!firebase.apps||!firebase.apps.length)return;
-  const auth=firebase.auth();
-  auth.onAuthStateChanged(async firebaseUser=>{
-    const loginBtn=G('ll-btn');
-    if(firebaseUser){
-      // Foydalanuvchi kirgan — Firestore dan ma'lumotlarini olamiz
-      // Login: email dan oldin qismni olamiz (admin@xmpro.app → admin)
-      const loginName=firebaseUser.email.replace(/@xmpro\.app$/,'').replace(/@.*$/,'');
-      // DB dan foydalanuvchini topamiz (avval login bo'yicha, keyin email bo'yicha)
-      let u=DB.users.find(x=>x.login===loginName||x.login===firebaseUser.email);
-      // Topilmasa — Firebase UID bo'yicha ham tekshiramiz
-      if(!u)u=DB.users.find(x=>x.fbUid===firebaseUser.uid);
-      if(u){
-        CU=u;
-        // fbUid ni saqlash (birinchi marta)
-        if(!u.fbUid){u.fbUid=firebaseUser.uid;save();}
-        if(loginBtn){loginBtn.disabled=false;loginBtn.textContent=t('login');}
-        G('login').style.display='none';G('shell').style.display='flex';
-        initApp();
-      } else {
-        // DB da yo'q — Firebase dan sign out qilamiz
-        auth.signOut();
-        if(loginBtn){loginBtn.disabled=false;loginBtn.textContent=t('login');}
-        G('lerr').style.display='block';
-        G('lerr').textContent={uz:'❌ Foydalanuvchi topilmadi',ru:'❌ Пользователь не найден',en:'❌ User not found'}[LANG];
-      }
-    } else {
-      // Chiqgan holat — login oynasini ko'rsatamiz (agar shell ochiq bo'lsa)
-      if(G('shell').style.display==='flex'){
-        CU=null;
-        G('shell').style.display='none';
-        G('login').style.display='flex';
-        G('l-pw').value='';
-        G('lerr').style.display='none';
-      }
-      if(loginBtn){loginBtn.disabled=false;loginBtn.textContent=t('login');}
-    }
-  });
+  // Firebase Auth ishlatilmaydi — bu funksiya bo'sh
 }
 
 function doLogout(){
@@ -1780,11 +1705,6 @@ function doLogout(){
   G('login').style.display='flex';
   G('l-pw').value='';
   G('lerr').style.display='none';
-  // Firebase sign out
-  if(typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length){
-    firebase.auth().signOut().catch(()=>{});
-  }
-  // Listener cleanup
   if(typeof _fbUnsubscribe!=='undefined'&&_fbUnsubscribe){_fbUnsubscribe();_fbUnsubscribe=null;}
 }
 
@@ -2739,42 +2659,10 @@ function saveUser(){
   const ism=G('mu-ism').value.trim(),login=G('mu-login').value.trim(),parol=G('mu-parol').value.trim(),rol=G('mu-rol').value;
   if(!ism||!login||parol.length<4){toast(t('required'),'err');return;}
   if(DB.users.find(u=>u.login===login)){toast({uz:'Bu login band',ru:'Логин занят',en:'Login taken'}[LANG],'err');return;}
-  
-  const newUser={id:uid(),ism,login,parol,rol,sexId:rol==='brigadir'?G('mu-sex').value:'',ts:Date.now()};
-  
-  // Firebase Auth ga ham qo'shamiz
-  const email=_loginToEmail(login);
-  const _doSave=()=>{
-    DB.users.push(newUser);
-    save();closeModal('m-user');renderUsers();
-    toast(`✅ ${ism} | ${login} / ${parol}`,'ok');
-  };
-  
-  if(typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length){
-    try{
-      // Ikkinchi app instance — admin sessiyasini buzmasdan yangi user yaratadi
-      const secApp = firebase.apps.find(a=>a.name==='secondary') ||
-        firebase.initializeApp(_FB_CFG,'secondary');
-      const secAuth = secApp.auth();
-      secAuth.createUserWithEmailAndPassword(email,parol)
-        .then(cred=>{
-          newUser.fbUid=cred.user.uid;
-          secAuth.signOut(); // ikkinchi sessiyani yopamiz
-          _doSave();
-        })
-        .catch(err=>{
-          if(err.code==='auth/email-already-in-use'){
-            _doSave();
-          } else {
-            console.warn('Auth createUser error:',err.code);
-            _doSave();
-            toast({uz:'⚠️ Auth xatosi, faqat local saqlandi',ru:'⚠️ Ошибка Auth, сохранено локально',en:'⚠️ Auth error, saved locally only'}[LANG],'warn');
-          }
-        });
-    }catch(e){console.warn('Secondary app:',e);_doSave();}
-  } else {
-    _doSave();
-  }
+  DB.users.push({id:uid(),ism,login,parol,rol,sexId:rol==='brigadir'?G('mu-sex').value:'',ts:Date.now()});
+  save(); // Firestore ga avtomatik sync (_fbPush orqali)
+  closeModal('m-user');renderUsers();
+  toast(`✅ ${ism} | login: ${login} / parol: ${parol}`,'ok');
 }
 function deleteUser(id){
   confirm2(t('del'),{uz:'Foydalanuvchini o\'chirasizmi?',ru:'Удалить пользователя?',en:'Delete user?'}[LANG],()=>{
@@ -2906,23 +2794,35 @@ document.addEventListener('click',function(e){
 // ===== BOOT =====
 loadTheme();loadLang();applyLang();
 load().then(()=>{
-  // Firebase init bo'lgunicha login oynasini ko'rsatamiz
-  // onAuthStateChanged avtomatik ravishda hal qiladi
-  G('login').style.display='flex';
-  // Agar Firebase yuklanmagan bo'lsa — local fallback
-  setTimeout(()=>{
-    // Agar 5 soniya ichida Firebase yuklanmasa va hali ham login oynasida bo'lsak
-    if(G('login').style.display==='flex'&&!_fbReady){
-      const r=localStorage.getItem('mr_rem');
-      if(r){
-        try{
-          const {login,parol}=JSON.parse(r);
-          const u=DB.users.find(x=>x.login===login&&x.parol===parol);
-          if(u){CU=u;G('login').style.display='none';G('shell').style.display='flex';initApp();}
-        }catch(e){}
-      }
+  const _rem=localStorage.getItem('mr_rem');
+  if(_rem){try{const {login}=JSON.parse(_rem);if(G('l-em'))G('l-em').value=login;}catch(e){}}
+
+  // Firebase tayyor bo'lgandan keyin — Firestore dan yangi users yuklab, auto-login tekshiramiz
+  const _bootCheck=()=>{
+    if(_fbReady&&_fbDB){
+      _fbDB.doc(_FB_DOC).get().then(snap=>{
+        if(snap.exists){
+          const remote=snap.data();
+          if(remote.users&&remote.users.length>0){DB.users=remote.users;}
+          Object.assign(DB,remote);
+          idbSet(DB_KEY,JSON.stringify(DB)).catch(()=>{});
+        }
+        if(!tryAutoLogin()){G('login').style.display='flex';}
+      }).catch(()=>{if(!tryAutoLogin()){G('login').style.display='flex';}});
+    } else {
+      if(!tryAutoLogin()){G('login').style.display='flex';}
     }
-  },5000);
+  };
+
+  // Firebase init tugashini kutamiz (max 4 soniya)
+  if(_fbReady){_bootCheck();}
+  else{
+    let waited=0;
+    const waitFb=setInterval(()=>{
+      waited+=200;
+      if(_fbReady||waited>=4000){clearInterval(waitFb);_bootCheck();}
+    },200);
+  }
 });
 </script>
 </body>
